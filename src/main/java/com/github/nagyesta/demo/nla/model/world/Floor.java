@@ -10,5 +10,7 @@ public class Floor implements NamedCoordinate, AvailableForPeople {
     private int index;
     private String name;
     private int occupants;
+    private int occupantsUp;
+    private int occupantsDown;
 
 }

@@ -1,6 +1,10 @@
 package com.github.nagyesta.demo.nla.view;
 
 public interface ConsoleConstants {
+
+    String CLEAR_SCREEN = "\u001b\u0063";
+    String GO_TO_TOP_LEFT = "\033[H";
+
     String RESET = "\033[0;0m";
     String RED = "\033[0;31m";
     String GREEN = "\033[0;32m";
@@ -30,17 +34,21 @@ public interface ConsoleConstants {
 
     String BUILDING_TOP_SHAFT = "┳━┳━┳";
     String BUILDING_TOP_SHAFT_SEPARATOR = "━━━";
-    String BUILDING_TOP_START = CYAN + "┃       " + WHITE + "┏━━━━━━━━━━━━";
+    String BUILDING_TOP_START = CYAN + "┃       " + WHITE + "┏"+CYAN+"<"+WHITE+"epam"+CYAN+">"+WHITE+"━━━━━━";
     String BUILDING_TOP_END = "━━━━━━┓" + CYAN + "                      ┃" + RESET;
-    String BUILDING_FLOOR_START = CYAN + "┃       " + WHITE + "┣━━━━━━━━━━━━╋";
+    String BUILDING_FLOOR_START = CYAN + "┃       " + WHITE + "┣━" + BLUE + "◴" + WHITE
+            + "━━━" + GREEN + "▲" + WHITE + "━━━" + GREEN + "▼" + WHITE + "━━╋";
     String BUILDING_FLOOR_END = WHITE + "╋━━━━━━┫" + CYAN + "                      ┃" + RESET;
     String BUILDING_FLOOR_SHAFT_SEPARATOR = WHITE + "╋━━━╋";
     String BUILDING_GROUND_FLOOR_START = GREEN + "┣━━━━━━━" + WHITE + "┻━━━━━━━━━━━━╋";
     String BUILDING_GROUND_FLOOR_END = WHITE + "╋━━━━━━┻" + GREEN + "━━━━━━━━━━━━━━━━━━━━━━┫" + RESET;
-    String BUILDING_LEVEL_START_EMPTY = CYAN + "┃       " + WHITE + "┃            ";
-    String BUILDING_LEVEL_START_POPULATED = CYAN + "┃       " + WHITE + "┃       %3d\ud83e\uddcd ";
+    public static final String INFINITY = " ∞\ud83e\uddcd ";
+    String OCCUPANT_MISSING = "    ";
+    String OCCUPANT_COUNTER_FORMAT = "%2d\ud83e\uddcd ";
+    String OCCUPANT_FORMAT = "%s";
+    String BUILDING_LEVEL_START_POPULATED = CYAN + "┃       " + WHITE + "┃" + OCCUPANT_FORMAT + OCCUPANT_FORMAT + OCCUPANT_FORMAT;
     String BUILDING_LEVEL_SHAFT_SEPARATOR = WHITE + "   ";
-    String BUILDING_LEVEL_END = WHITE + "    " + BLUE + "%s" + WHITE + " ┃" + CYAN + "                      ┃";
+    String BUILDING_LEVEL_END = WHITE + "   " + BLUE + "%s" + WHITE + " ┃" + CYAN + "                      ┃";
     String SHAFT_DOOR_CLOSED = CYAN + "┋";
     String SHAFT_DOOR_OPEN = WHITE + " ";
     String BUILDING_FOUNDATION_ROW_START = YELLOW + "┃ Steps: %4d        ";

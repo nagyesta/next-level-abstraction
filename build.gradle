@@ -1,35 +1,109 @@
+//noinspection GroovyAssignabilityCheck
 plugins {
+    id 'application'
     id 'java'
+    id 'jacoco'
     id "io.freefair.lombok" version "5.3.0"
 }
 
 group 'com.github.nagyesta'
 version '1.0-SNAPSHOT'
 
+//noinspection GroovyAssignabilityCheck
 repositories {
     mavenCentral()
 }
 
+ext {
+    javaMainClassName = "com.github.nagyesta.demo.nla.Main"
+}
+
 dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
-    implementation 'commons-io:commons-io:2.8.0'
+    testImplementation 'commons-io:commons-io:2.8.0'
+    testImplementation 'org.mockito:mockito-all:1.10.19'
+    testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.6.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 
-jar {
-    manifest {
-        attributes "Main-Class": "com.github.nagyesta.demo.nla.Main"
-        attributes "Class-Path": configurations.compileClasspath.collect { it.absolutePath }.join(" ")
-    }
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
-task run(type: JavaExec) {
-    classpath = files(tasks.jar)
-    dependsOn build
+def speed = project.hasProperty('appSpeed') ? '--' + project.appSpeed : "-"
+def size = project.hasProperty('size') ? '--' + project.size : "-"
+def controller = project.hasProperty('controller') ? '--' + project.controller : "-"
+
+tasks.withType(JavaExec) {
+    args = [speed, size, controller]
+}
+
+application {
+    getMainClass().set project.javaMainClassName as String
+}
+jar {
+    //noinspection GroovyAssignabilityCheck
+    manifest {
+        attributes 'Main-Class' : project.javaMainClassName as String
+    }
+}
+run.dependsOn build
+
+task benchmarkTiny(type: Exec) {
+    inputs.file(file(jar.outputs.files.singleFile))
+    dependsOn jar
+
+    group = "Execution"
+    //noinspection GroovyAccessibility
+    description = "Run the output executable jar with ExecTask"
+    commandLine "java", "-jar", jar.outputs.files.singleFile,
+            "--tiny", "--insane", "--custom", "--benchmark"
+    logging.captureStandardError LogLevel.ERROR
+}
+
+task benchmarkEmpty(type: Exec) {
+    inputs.file(file(jar.outputs.files.singleFile))
+    dependsOn jar
+
+    group = "Execution"
+    //noinspection GroovyAccessibility
+    description = "Run the output executable jar with ExecTask"
+    commandLine "java", "-jar", jar.outputs.files.singleFile,
+            "--empty", "--insane", "--custom", "--benchmark"
+    logging.captureStandardError LogLevel.ERROR
+}
+
+
+task benchmarkLarge(type: Exec) {
+    inputs.file(file(jar.outputs.files.singleFile))
+    dependsOn jar
+
+    group = "Execution"
+    //noinspection GroovyAccessibility
+    description = "Run the output executable jar with ExecTask"
+    commandLine "java", "-jar", jar.outputs.files.singleFile,
+            "--large", "--insane", "--custom", "--benchmark"
+    logging.captureStandardError LogLevel.ERROR
+}
+
+task benchmark {
+    dependsOn benchmarkTiny
+    dependsOn benchmarkEmpty
+    dependsOn benchmarkLarge
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        xml.destination file("$buildDir/reports/jacoco/report.xml")
+        csv.enabled false
+        html.enabled true
+    }
 }
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }

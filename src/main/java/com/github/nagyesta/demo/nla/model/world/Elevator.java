@@ -13,19 +13,19 @@ public class Elevator implements NamedCoordinate, AvailableForPeople {
     private double floor;
     private ElevatorStatus status;
 
-    public boolean hasDoorOnFloor(int floorIndex) {
+    public boolean hasDoorOnFloor(final int floorIndex) {
         return floorIndex == floor;
     }
 
-    public boolean hasTopOnFloor(int floorIndex) {
+    public boolean hasTopOnFloor(final int floorIndex) {
         return floorIndex == (floor + 0.5D);
     }
 
-    public boolean hasBottomOnFloor(int floorIndex) {
+    public boolean hasBottomOnFloor(final int floorIndex) {
         return floorIndex == (floor - 0.5D);
     }
 
-    public boolean isBelowFloor(int floorIndex) {
+    public boolean isBelowFloor(final int floorIndex) {
         return floorIndex > (floor + 0.5D);
     }
 

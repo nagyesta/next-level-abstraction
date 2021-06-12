@@ -30,8 +30,8 @@ class ConsolePresenterIntegrationTest {
                         .status(ElevatorStatus.DOOR_OPEN)
                         .build())
                 .build().collect(Collectors.toMap(Elevator::getName, Function.identity()));
-        Map<String, Floor> floors = Stream.<Floor>builder()
-                .add(Floor.builder().index(0).name("0")
+        final Map<String, Floor> floors = Stream.<Floor>builder()
+                .add(Floor.builder().index(0).name(" 0")
                         .occupants(0)
                         .build())
                 .build().collect(Collectors.toMap(Floor::getName, Function.identity()));
@@ -66,26 +66,29 @@ class ConsolePresenterIntegrationTest {
                         .status(ElevatorStatus.MOVING_UP_SLOW)
                         .build())
                 .build().collect(Collectors.toMap(Elevator::getName, Function.identity()));
-        Map<String, Floor> floors = Stream.<Floor>builder()
-                .add(Floor.builder().index(0).name("G")
-                        .occupants(249)
+        final Map<String, Floor> floors = Stream.<Floor>builder()
+                .add(Floor.builder().index(0).name(" G")
+                        .occupants(29)
                         .build())
-                .add(Floor.builder().index(1).name("1")
+                .add(Floor.builder().index(1).name(" 1")
                         .occupants(0)
                         .build())
-                .add(Floor.builder().index(2).name("2")
-                        .occupants(109)
+                .add(Floor.builder().index(2).name(" 2")
+                        .occupants(42)
+                        .occupantsUp(19)
+                        .occupantsDown(3)
                         .build())
-                .add(Floor.builder().index(3).name("3")
-                        .occupants(99)
+                .add(Floor.builder().index(3).name(" 3")
+                        .occupantsDown(99)
+                        .occupants(23)
                         .build())
-                .add(Floor.builder().index(4).name("4")
+                .add(Floor.builder().index(4).name(" 4")
                         .occupants(49)
                         .build())
-                .add(Floor.builder().index(5).name("5")
+                .add(Floor.builder().index(5).name(" 5")
                         .occupants(19)
                         .build())
-                .add(Floor.builder().index(6).name("6")
+                .add(Floor.builder().index(6).name(" 6")
                         .occupants(9)
                         .build())
                 .build().collect(Collectors.toMap(Floor::getName, Function.identity()));
@@ -99,16 +102,16 @@ class ConsolePresenterIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("validDataProvider")
-    void testRenderFrameShouldRenderTheExpectedFrameWhenCalledWithTheExample(World input, String expectedResource) throws IOException {
+    void testRenderFrameShouldRenderTheExpectedFrameWhenCalledWithTheExample(final World input, final String expectedResource) throws IOException {
         //given
-        final ConsolePresenter underTest = new ConsolePresenter();
         final String expected = IOUtils.resourceToString(expectedResource, StandardCharsets.UTF_8);
         final StringBuilder actual = new StringBuilder();
+        final ConsolePresenter underTest = new ConsolePresenter(actual);
 
         //when
-        underTest.renderFrame(actual, input);
+        underTest.renderFrame(input);
 
         //then
-        Assertions.assertArrayEquals(expected.split(System.lineSeparator()), actual.toString().split(System.lineSeparator()));
+        Assertions.assertArrayEquals(expected.split("\n"), actual.toString().split(System.lineSeparator()));
     }
 }
