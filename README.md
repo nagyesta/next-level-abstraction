@@ -32,6 +32,7 @@ Good luck finding the right level of abstraction for modeling the behavior of pe
 ## Presentation files
 
 - Complete: [Step Into Next Level Abstraction 2021.pdf](.github/assets/Step%20Into%20Next%20Level%20Abstraction%202021.pdf)
+- Summary : [Step Into Next Level Abstraction 2021 - Recap.pdf](.github/assets/Step%20Into%20Next%20Level%20Abstraction%202021%20-%20Recap.pdf)
 
 ## Hall of Fame
 
